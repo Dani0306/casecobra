@@ -42,6 +42,7 @@ export function constructMetadata({
       images: [image], 
       creator: "@daniel1colorado1"
     }, 
-    icons
+    icons, 
+    metadataBase: new URL("https://casecobra-one-lovat.vercel.app/")
   }
 }
