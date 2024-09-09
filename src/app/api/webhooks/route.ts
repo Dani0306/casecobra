@@ -28,7 +28,6 @@ export async function POST(req: Request) {
 
 
       console.log(session)
-      console.log(session.customer_details!.address, session.shipping_details!.address)
 
       const { userId, orderId } = session.metadata || {
         userId: null,
@@ -42,7 +41,8 @@ export async function POST(req: Request) {
       console.log(session)
 
       const billingAddress = session.customer_details!.address
-      const shippingAddress = session.shipping_details!.address
+      // @ts-ignore
+      const shippingAddress = session.shipping!
 
 
 
@@ -54,12 +54,12 @@ export async function POST(req: Request) {
           isPaid: true,
           shippingAddress: {
             create: {
-              name: session.customer_details!.name!,
-              city: shippingAddress!.city!,
-              country: shippingAddress!.country!,
-              postalCode: shippingAddress!.postal_code!,
-              street: shippingAddress!.line1!,
-              state: shippingAddress!.state,
+              name: shippingAddress!.name!,
+              city: shippingAddress!.address!.city!,
+              country: shippingAddress!.address!.country!,
+              postalCode: shippingAddress!.address!.postal_code!,
+              street: shippingAddress!.address!.line1!,
+              state: shippingAddress!.address!.state || "",
             },
           },
           billingAddress: {
@@ -69,7 +69,7 @@ export async function POST(req: Request) {
               country: billingAddress!.country!,
               postalCode: billingAddress!.postal_code!,
               street: billingAddress!.line1!,
-              state: billingAddress!.state,
+              state: billingAddress!.state || "",
             },
           },
         },
@@ -86,3 +86,4 @@ export async function POST(req: Request) {
     )
   }
 }
+
