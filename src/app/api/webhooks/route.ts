@@ -26,6 +26,10 @@ export async function POST(req: Request) {
 
       const session = event.data.object as Stripe.Checkout.Session
 
+
+      console.log(session)
+      console.log(session.customer_details!.address, session.shipping_details!.address)
+
       const { userId, orderId } = session.metadata || {
         userId: null,
         orderId: null,
@@ -35,8 +39,12 @@ export async function POST(req: Request) {
         throw new Error('Invalid request metadata')
       }
 
+      console.log(session)
+
       const billingAddress = session.customer_details!.address
       const shippingAddress = session.shipping_details!.address
+
+
 
       await db.order.update({
         where: {
